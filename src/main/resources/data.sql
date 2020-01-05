@@ -10,3 +10,5 @@ CREATE TABLE product (
 );
 
 CREATE INDEX FK1mtsbur82frn64de7balymq9s ON product (category_id ASC);
+
+insert into product (details, name, price, category_id) values('Just a default product', 'Things', '42.00', 1);
