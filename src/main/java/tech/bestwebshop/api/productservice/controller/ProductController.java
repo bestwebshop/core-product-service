@@ -43,6 +43,26 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/products/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable(value = "id") Integer productId,
+                                                 @RequestBody @Valid Product productToUpdate){
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if(optionalProduct.isPresent()){
+            if(!optionalProduct.get().equals(productToUpdate)){
+                try{
+                    Product product = productRepository.save(productToUpdate);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).body(product);
+                } catch (Exception e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(optionalProduct.get());
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable(value = "id") Integer productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
