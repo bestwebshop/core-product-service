@@ -8,6 +8,7 @@ import tech.bestwebshop.api.productservice.model.Product;
 import tech.bestwebshop.api.productservice.model.ProductDTO;
 import tech.bestwebshop.api.productservice.repositories.ProductRepository;
 
+import javax.annotation.security.RolesAllowed;
 import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.Optional;
@@ -21,11 +22,13 @@ public class ProductController {
     ProductRepository productRepository;
 
     @GetMapping("/products")
+    @RolesAllowed({"USER"})
     public Iterable<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     @GetMapping("/products/{id}")
+    @RolesAllowed({"USER"})
     public ResponseEntity<Product> getProductById(@PathVariable(value = "id") Integer productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         return optionalProduct.map(ResponseEntity::ok)
@@ -33,6 +36,7 @@ public class ProductController {
     }
 
     @PostMapping("/products")
+    @RolesAllowed({"ADMIN"})
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductDTO productDTO) {
         try {
             Product product = productRepository.save(new Product(0, productDTO.getName(), productDTO.getPrice(),
@@ -44,6 +48,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
+    @RolesAllowed({"ADMIN"})
     public ResponseEntity<Product> updateProduct(@PathVariable(value = "id") Integer productId,
                                                  @RequestBody @Valid Product productToUpdate){
         Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -64,6 +69,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
+    @RolesAllowed({"ADMIN"})
     public ResponseEntity<Product> deleteProduct(@PathVariable(value = "id") Integer productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isPresent()){
