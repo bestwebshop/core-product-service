@@ -27,7 +27,8 @@ public class ProductServiceApplication {
 		public void configure(HttpSecurity http) throws Exception {
 			http
 					.authorizeRequests()
-					/**/.anyRequest()
+					.antMatchers("/**")
+					///**/.anyRequest()
 					.authenticated()
 					.and()
 					/**/.exceptionHandling()
