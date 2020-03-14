@@ -27,8 +27,7 @@ public class ProductServiceApplication {
 		public void configure(HttpSecurity http) throws Exception {
 			http
 					.authorizeRequests()
-					.antMatchers("/**")
-					///**/.anyRequest()
+					/**/.anyRequest()
 					.authenticated()
 					.and()
 					/**/.exceptionHandling()
@@ -37,7 +36,7 @@ public class ProductServiceApplication {
 	}
 
 	@Configuration
-	@EnableGlobalMethodSecurity
+	@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 	public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 	}
